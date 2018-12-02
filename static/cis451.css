@@ -1,0 +1,65 @@
+body {
+    font-family: 'Muli', sans-serif;
+}
+
+div#mainContainer {
+    margin: 2%;
+}
+
+div#introContainer {
+    margin: auto;
+    text-align: center;
+}
+
+.ui-autocomplete {
+    position: absolute;
+    z-index: 1000;
+    cursor: default;
+    padding: 0;
+    margin-top: 2px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+       -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.ui-autocomplete > li {
+  padding: 3px 20px;
+}
+.ui-autocomplete > li.ui-state-focus {
+  background-color: #DDD;
+}
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+div#orderSummary {
+    padding: 5%;
+    text-align: center;
+}
+
+table#orderHistoryTable, p#orderHistoryErrorMessage {
+    margin-top: 20px;
+}
+
+div#carouselContainer {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+div.centerTextBlock {
+    margin: auto;
+    text-align: center;
+}
+
+div#employeeSummaryInformation {
+    margin-top: 25px;
+}
+
+div#employeeSummaryInformation b {
+    color: red;
+}

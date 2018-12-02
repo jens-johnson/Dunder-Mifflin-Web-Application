@@ -1,0 +1,158 @@
+<!--*/
+order-history.html
+
+Displays order history information for clients
+*/-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!--Favicon-->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#000000">
+        
+
+        <!-- Bootstrap, fontawesome, Google Fonts, date range picker, custom CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='cis451.css') }}">
+
+        <title>Order History</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">CIS 451 - Final Project</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/About">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="humanResourceTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Human Resource Tools</a>
+                        <div class="dropdown-menu" aria-labelledby="humanResourceTools">
+                            <a class="dropdown-item" href="/Employees">Employees</a>
+                            <a class="dropdown-item" href="/Salaries">Salaries</a>
+                        </div>
+                    </li>
+                    <li class="nav-item active dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="salesTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales Tools</a>
+                        <div class="dropdown-menu" aria-labelledby="salesTools">
+                            <a class="dropdown-item" href="/Place-Order">Place Order</a>
+                            <a class="dropdown-item" href="/Order-History">Order History</a>
+                            <a class="dropdown-item" href="/Products">Products</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administrative</a>
+                        <div class="dropdown-menu" aria-labelledby="adminTools">
+                            <a class="dropdown-item" href="/Sales-Regions">Sales Regions</a>
+                            <a class="dropdown-item" href="/Sales-Employees">Sales Employees</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="mainContainer">
+            <div id="introContainer">
+                <h1><b>Check order history</b></h1>
+                <p>Check order history below</p>
+            </div>
+            <div>
+                <form action="/Order-History" method="POST">
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <label for="orderDates"><b>Select an order date range:</b></label>
+                            <input type="text" id="orderDates" name="orderDates" class="form-control" required/>
+                        </div>
+                        <div class="col form-group">
+                            <label for="salesClient"><b>Select a client:</b></label>
+                            <select id="salesClient" name="salesClient" class="form-control" required>
+                                <option selected>Select a client</option>
+                                {% for index,row in sales_clients.iterrows() %}
+                                <option value="{{ row['clientId'] }}">{{ (row['name']).decode('utf-8') }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center" style="margin:10px;"><button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button></div> 
+                </form>
+            </div>
+
+            {% if orderInfo is not none %}
+            <div id="orderSummary">
+                <h3>Displaying order history for <b>{{ clientName.decode('utf-8') }}</b></h3>
+                <h5><b>Time Period:</b> {{ orderHistoryRange }}</h5>
+                <hr>
+                {% if not orderInfo.empty %}
+                    {% for index, row in orderInfo.iterrows() %}
+                    <b>Number of Orders:</b> {{ row['num_orders']|int }} <br />
+                    <b>Total Amount Spent:</b> {{ "${:,.2f}".format(row['total_spent']|float) }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if orderItemsInfo is not none %}
+                {% if orderItemsInfo.shape[0] == 0 %}
+                <p id="orderHistoryErrorMessage">There are no items to display</p>
+                {% elif orderItemsInfo.shape[0] < 30 %}
+                    <table id="orderHistoryTable" class="table table-hover">
+                        <thead class="thead-dark">
+                            <th scope="col-2">Item Number</th>
+                            <th scope="col-8">Description</th>
+                            <th scope="col-1">Quantity</th>
+                            <th scope="col-1">Total Price</th>
+                        </thead>
+                        <tbody>
+                            {% for index, row in orderItemsInfo.iterrows() %}
+                            <tr>
+                                <td scope="col-2">{{ row['itemNo'] }}</td>
+                                <td scope="col-8">{{ row['description'] }}</td>
+                                <td scope="col-1">{{ row['quantity'] }}</td>
+                                <td scope="col-1">{{ "${:,.2f}".format(row['totalPrice']|float) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                <p>There are too many items to display for this period.</p>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- jQuery, jQuery UI, Bootstrap JS, moment js and daterangepicker, custom js -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+        <script src="{{ url_for('static', filename='cis451.js') }}"></script>
+
+        <script>
+            // Instantiates a daterangepicker for the order history form
+            $('#orderDates').daterangepicker({
+                "minYear": 2005,
+                "maxYear": 2018,
+                "startDate": "11/11/2018",
+                "endDate": "11/25/2018",
+                "minDate": "1/01/2005",
+                "maxDate": "12/30/2018",
+                "opens": "center"
+            });
+        </script>
+    </body>
+</html>

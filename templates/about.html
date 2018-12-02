@@ -1,0 +1,118 @@
+<!--*/
+about.html
+
+Application information
+*/-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="msapplication-TileColor" content="#000000">
+        <meta name="theme-color" content="#000000">
+        
+        <!--Favicon-->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#000000">
+        
+        <!-- Bootstrap, fontawesome, Google Fonts, custom CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='cis451.css') }}">
+
+        <title>About</title>
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">CIS 451 - Final Project</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/About">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="humanResourceTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Human Resource Tools</a>
+                        <div class="dropdown-menu" aria-labelledby="humanResourceTools">
+                            <a class="dropdown-item" href="/Employees">Employees</a>
+                            <a class="dropdown-item" href="/Salaries">Salaries</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="salesTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales Tools</a>
+                        <div class="dropdown-menu" aria-labelledby="salesTools">
+                            <a class="dropdown-item" href="/Place-Order">Place Order</a>
+                            <a class="dropdown-item" href="/Order-History">Order History</a>
+                            <a class="dropdown-item" href="/Products">Products</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administrative</a>
+                        <div class="dropdown-menu" aria-labelledby="adminTools">
+                            <a class="dropdown-item" href="/Sales-Regions">Sales Regions</a>
+                            <a class="dropdown-item" href="/Sales-Employees">Sales Employees</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="mainContainer">
+            <div id="introContainer">
+                <h1><b>About</b></h1>
+            </div>
+            <div>
+                <h5><b>What is this application?</b></h5>
+                <p>&emsp;A fully functional web application meant to simulate database functionality for the employees of Dunder Mifflin, a fictional company in the show <a href="https://en.wikipedia.org/wiki/The_Office_(U.S._TV_series)">The Office (U.S. Version)</a></p>
+
+                <h5><b>How does it work?</b></h5>
+                <p>&emsp;Using a Flask framework, the application's core logic is written in Python, which sets up a connection to the database running on ix-dev.cs.uoregon.edu. From there the user can interact with the database, viewing information about the company and its sales, or entering an order.
+                    There are a variety of other cool features about this applications, including AJAX calls, mobile-responsive frameworks, and so much more, which can be examined by looking at the code for the application. Examine the diagram below for an overview of the system.</p>
+                <img id="dunderDiagram" src="{{ url_for('static', filename='images/diagram.png') }}" style="max-width: 800px; margin-bottom: 20px;">
+
+                <h5><b>How do I use it?</b></h5>
+                <p>&emsp;While the user guide describes the application in detail, some of the cool features of it are:</p>
+
+                &emsp;<b>Human Resource Tools</b><br/>
+                &emsp;<em>Comprehensive tools for the human resources team at Dunder Mifflin.</em><br/>
+                <ul>
+                    <li>Visit the <a href="/Employees">Employees</a> page to view detailed employee information, filtering by department if desired.</li>
+                    <li>Visit the <a href="/Salaries">Salaries</a> page to view company-wide salary information, including individual and departmental.</li>
+                </ul><br/>
+
+                &emsp;<b>Sales Tools</b><br/>
+                &emsp;<em>Tools that enable the sales team at Dunder Mifflin</em><br/>
+                <ul>
+                    <li>Help clients place an order through the  <a href="/Place-Order">Place Order</a> page.</li>
+                    <li>View the order history for a client in a given date range on the <a href="/Order-History">Order History</a> page to make the customized sale solutions that you need.</li>
+                    <li>View the popularity of all products in terms of total quantity and revenue through the <a href="/Products">Products</a> page to view the performance of various stock items.</li>
+                </ul><br/>
+
+                &emsp;<b>Administrative Tools</b><br/>
+                &emsp;<em>For helping upper management make informed decisions</em><br/>
+                <ul>
+                    <li>View the performance of various clients through the <a href="/Sales-Regions">Sales Regions</a> page, which breaks down revenue for all clients within a sales region.</li>
+                    <li>View the order history for a client in a given date range on the <a href="/Order-History">Order History</a> page to make the customized sale solutions that you need.</li>
+                    <li>View information on individual sales employees on the <a href="/Sales-Employees">Sales Employees</a> page, including total units sold and total revenue produced, ensuring that they are meeting performance standards.</li>
+                </ul><br/>
+
+            </div>
+        </div>
+
+        <!-- jQuery, jQuery UI, Bootstrap JS, custom js -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='cis451.js') }}"></script>
+    </body>
+</html>

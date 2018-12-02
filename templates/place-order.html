@@ -1,0 +1,203 @@
+<!--*/
+place-order.html
+
+Place an order for a client
+*/-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <!--Favicon-->
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
+        <link rel="manifest" href="{{ url_for('static', filename='favicon/site.webmanifest') }}">
+        <link rel="mask-icon" href="{{ url_for('static', filename='favicon/safari-pinned-tab.svg') }}" color="#000000">
+        
+
+        <!-- Bootstrap, fontawesome, Google Fonts, custom CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+        <link rel="stylesheet" href="{{ url_for('static', filename='cis451.css') }}">
+
+        <title>Place Order</title>
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">CIS 451 - Final Project</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/About">About</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="humanResourceTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Human Resource Tools</a>
+                        <div class="dropdown-menu" aria-labelledby="humanResourceTools">
+                            <a class="dropdown-item" href="/Employees">Employees</a>
+                            <a class="dropdown-item" href="/Salaries">Salaries</a>
+                        </div>
+                    </li>
+                    <li class="nav-item active dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="salesTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sales Tools</a>
+                        <div class="dropdown-menu" aria-labelledby="salesTools">
+                            <a class="dropdown-item" href="/Place-Order">Place Order</a>
+                            <a class="dropdown-item" href="/Order-History">Order History</a>
+                            <a class="dropdown-item" href="/Products">Products</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="adminTools" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administrative</a>
+                        <div class="dropdown-menu" aria-labelledby="adminTools">
+                            <a class="dropdown-item" href="/Sales-Regions">Sales Regions</a>
+                            <a class="dropdown-item" href="/Sales-Employees">Sales Employees</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="mainContainer">
+            <div id="introContainer">
+                <h1><b>Place an Order</b></h1>
+                <p><em>Please Note:</em> This page is for sales employees only.</p>
+                <p>Select the employee responsible for placing the order, the client on the order (filtering by industry if preferred),
+                    the order date, sales fee, and items on the order.
+                </p>
+                <p>The order items <b>must be part of the Dunder Mifflin stock</b> or the order will not go through.</p>
+            </div>
+            <form action="/Place-Order" method="POST">
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label for="salesEmployee"><b>Sales Employee:</b></label>
+                        <select id="salesEmployee" name="salesEmployee" class="form-control" required>
+                            <option selected disabled>Select a sales employee</option>
+                            {% for index,row in sales_employees.iterrows() %}
+                            <option value="{{ row['ssn'] }}">{{ row['full_name'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col form-group">
+                        <label for="salesClient"><b>Client:</b></label>
+                        <select id="salesClient" name="salesClient" class="form-control" required>
+                            <option selected disabled>Select a client</option>
+                            {% for index,row in sales_clients.iterrows() %}
+                            <option value="{{ row['clientId'] }}">{{ (row['name']).decode('utf-8') }}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="/Place-Order?industry=1">Financials</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=2">Information Technology</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=3">Health Care</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=4">Consumer Discretionary</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=5">Communication Services</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=6">Industrials</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=7">Energy</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=8">Consumer Staples</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=9">Materials</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=10">Utilities</a>
+                            <a class="dropdown-item" href="/Place-Order?industry=11">Real Estate</a>
+                            <a class="dropdown-item" href="/Place-Order"><b>Reset</b></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col form-group">
+                        <label for="salesDate"><b>Sales Date:</b></label>
+                        <input type="datetime-local" id="salesDate" name="salesDate" class="form-control" required />
+                    </div>
+                    <div class="col form-group">
+                        <label for="salesFee"><b>Service Fee:</b></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-usd" aria-hidden="true"></i></span>
+                                <input type="number" value="5.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100" class="form-control currency" id="salesFee" name="salesFee" required />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center" style="margin:10px;"><button type="submit" class="btn btn-primary"><i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</button></div>
+                <div class="container">
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <table class="table table-bordered table-hover" id="tab_logic">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Item</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th class="text-center">Total Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id='addr0'>
+                                        <td>1</td>
+                                        <td><input type="text" name='item0' placeholder='Item' class="form-control orderEntryItem" required/></td>
+                                        <td><input type="number" min=0 name='quantity0' placeholder='Quantity' class="form-control orderEntryQuantity" required/></td>
+                                        <td><input type="text" value="$0.00" name="totalPrice0" class='form-control orderEntryTotalPrice' readonly="readonly"></td>
+                                    </tr>
+                                    <tr id='addr1'></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <a id="add_row" class="btn btn-default pull-left"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Item</a>
+                        <a id='delete_row' class="pull-right btn btn-default"><i class="fa fa-minus-circle" aria-hidden="true"></i> Remove Item</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!-- jQuery, jQuery UI, Bootstrap JS, custom js -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>
+        <script src="{{ url_for('static', filename='cis451.js') }}"></script>
+
+        <script>
+            // Use stock data to auto complete order form
+            var data = {{ stock_items | tojson | safe }};
+            var stockData = data['stockItem'];
+            var stockItems = [];
+            for (item in stockData){
+                stockItems.push(stockData[item])
+            }
+            $('input.orderEntryItem').autocomplete({
+                source: stockItems,
+                minLength: 0,
+            });
+
+            // For dynamically adding/deleting rows from the order table
+            var rowCount = 1;
+            $("a#add_row").click(function(){
+                $('#addr'+rowCount).html("<td>"+ (rowCount+1) +"</td><td><input name='item"+rowCount+"' type='text' placeholder='Item' class='form-control input-md orderEntryItem' required/> </td><td><input name='quantity"+rowCount+"' type='number' min=0 placeholder='Quantity' class='form-control input-md orderEntryQuantity' required></td><td><input type='text' value='$0.00' name='totalPrice"+rowCount+"' class='form-control orderEntryTotalPrice' readonly='readonly'></td>");
+
+                $('#tab_logic').append('<tr id="addr'+(rowCount+1)+'"></tr>');
+                rowCount++;
+                
+                $('input.orderEntryItem').each(function(){
+                    $(this).autocomplete({
+                        source: stockItems,
+                        minLength: 0,
+                    });
+                });
+            });
+            $("a#delete_row").click(function(){
+                if(rowCount>1){
+                    $("#addr"+(rowCount-1)).html('');
+                    rowCount--;
+                }
+            });
+        </script>
+    </body>
+</html>
