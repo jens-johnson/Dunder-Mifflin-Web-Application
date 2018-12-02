@@ -4,3 +4,5 @@ This repository is a fully-responsive web application created using Flask, MySQL
 
 ### How does it work?
 View the diagram below for a basic overview.
+
+![diagram](https://raw.githubusercontent.com/jens-johnson/Dunder-Mifflin-Web-Application/master/static/images/diagram.png)
