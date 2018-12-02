@@ -80,7 +80,7 @@ Displays order history information for clients
                         <div class="col form-group">
                             <label for="salesClient"><b>Select a client:</b></label>
                             <select id="salesClient" name="salesClient" class="form-control" required>
-                                <option selected>Select a client</option>
+                                <option selected disabled>Select a client</option>
                                 {% for index,row in sales_clients.iterrows() %}
                                 <option value="{{ row['clientId'] }}">{{ (row['name']).decode('utf-8', errors='ignore') }}</option>
                                 {% endfor %}
