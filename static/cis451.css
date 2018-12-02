@@ -63,3 +63,7 @@ div#employeeSummaryInformation {
 div#employeeSummaryInformation b {
     color: red;
 }
+
+div.modal-body {
+    min-height: 500px !important;
+}

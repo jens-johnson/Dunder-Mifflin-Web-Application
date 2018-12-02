@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    var layout = {autosize: true}
     $('button#salaryByDept').click(function(){
         $.ajax({
             url: '/Salaries/Department',
@@ -23,7 +24,7 @@ $(document).ready(function(){
                     }
                 ];
 
-                Plotly.newPlot('departmentSalariesModalContent', departmentPlotData);
+                Plotly.newPlot('departmentSalariesModalContent', departmentPlotData, layout);
             }
         });
     });
@@ -51,7 +52,7 @@ $(document).ready(function(){
                     }
                 ];
 
-                Plotly.newPlot('individualSalariesModalContent', individualPlotData);
+                Plotly.newPlot('individualSalariesModalContent', individualPlotData, layout);
             }
         });
     });
@@ -100,7 +101,7 @@ $(document).ready(function(){
                     }
                 ];
 
-                Plotly.newPlot('companiesByRegionModalContent', regionSalesPlotData);
+                Plotly.newPlot('companiesByRegionModalContent', regionSalesPlotData, layout);
             }
         });
     });
@@ -127,4 +128,11 @@ $(document).ready(function(){
             }
         });
     });
+    $('#individualSalariesModal').on('shown.bs.modal', function (e) {
+        Plotly.relayout('individualSalariesModalContent',layout);
+    });
+    $('#departmentSalariesModal').on('shown.bs.modal', function (e) {
+        Plotly.relayout('departmentSalariesModalContent',layout);
+    });
+    
 });

@@ -105,6 +105,7 @@ def salariesByIndividual():
     This list is used to populate a Plotly graph on the page.
     '''
     individual_salaries = pd.read_sql_query(Query.SALARY_BY_INDIVIDUAL.value, dbConnection).to_json()
+    print(individual_salaries)
     return individual_salaries
 
 @app.route('/Place-Order', methods=['GET','POST'])

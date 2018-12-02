@@ -2,5 +2,5 @@ Flask
 gunicorn
 pandas
 mysqlclient
-enum
-json
+enum34==1.1.6
+unicode==2.6
